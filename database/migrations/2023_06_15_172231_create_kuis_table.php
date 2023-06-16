@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kuis_models', function (Blueprint $table) {
+        Schema::create('kuis', function (Blueprint $table) {
             $table->id();
             $table->string('soal');
             $table->string('option_a');
             $table->string('option_b');
             $table->string('option_c');
             $table->string('option_d');
+            $table->string('jawaban');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kuis_models');
+        Schema::dropIfExists('kuis');
     }
 };

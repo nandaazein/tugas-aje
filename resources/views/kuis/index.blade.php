@@ -48,7 +48,7 @@
             <h1 class="logo me-auto"><a href="index.html">Narasi Sejarah</a></h1>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                    <li><a class="nav-link scrollto active" href="{{ route('home.index') }}">Home</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
                     <li><a class="nav-link   scrollto" href="#portfolio">Portfolio</a></li>
@@ -76,7 +76,17 @@
                 </button>
             @endif
         </div>
+        <div class="text-center">
+            <form action="{{ route('startkuis') }}" method="get" style="display: inline">
 
+                <a class="btn btn-primary" type="submit" href="{{ route('startkuis') }}" title="">Mulai Kuis</a>
+                <span class="color color--blue" data-value="1"></span>
+                <span class="color color--orange" data-value="1"></span>
+                <span class="color color--green" data-value="1"></span>
+                <span class="color color--white" data-value="1"></span>
+
+            </form>
+        </div>
 
         <div class="container-sm mt-5 text-left" style="width: 50%">
             @if (session()->has('success'))
@@ -106,13 +116,15 @@
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                            id="flexRadioDefault4">
                         <label class="form-check-label" for="flexRadioDefault4" style="color: #ECF2FF">
                             {{ $item->option_d }}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                            id="flexRadioDefault5">
                         <label class="form-check-label" for="flexRadioDefault5" style="color: #ECF2FF"> Jawaban :
                             {{ $item->Jawaban }}
                         </label>
@@ -121,7 +133,7 @@
 
 
                     {{-- ADMIN --}}
-                    
+
                     <div class="mt-3">
                         @if (auth()->user()->level == 'admin')
                             <form action="{{ route('mulaikuis.destroy', $item->id) }}" method="POST"

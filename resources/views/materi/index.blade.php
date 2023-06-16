@@ -322,7 +322,7 @@
             <h1 class="logo me-auto"><a href="index.html">Narasi Sejarah</a></h1>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                    <li><a class="nav-link scrollto active" href="{{ route('home.index') }}">Home</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
                     <li><a class="nav-link   scrollto" href="#portfolio">Portfolio</a></li>
@@ -361,18 +361,16 @@
 
                             <div class="row">
                                 @foreach ($items as $item)
-                                    <div class="col-md-4">
+                                    <div class="col-md-15">
                                         <div class="card border-0 mb-3 shadow">
-                                            <img src="{!! asset('storage/' . $item->image) !!}" height="200px" width="100px">
+                                            <img src="{!! asset('storage/' . $item->image) !!}" height="500px" width="100px">
 
 
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $item->title }}</h5>
                                                 <p class="mb-0 text-secondary">{!! htmlspecialchars_decode(substr($item->description, 0, 70)) !!}</p>
-                                                <br><a
-                                                    href="{{ route('readmore.materi', ['id' => $item->id]) }}"
-                                                    class="readmore ">Read more <i
-                                                        class="bi bi-arrow-right"></i></a>
+                                                <br><a href="{{ route('readmore.materi', ['id' => $item->id]) }}"
+                                                    class="readmore ">Read more <i class="bi bi-arrow-right"></i></a>
 
                                                 @if (auth()->user()->level == 'admin')
                                                     <form action="{{ route('materi.destroy', $item->id) }}"

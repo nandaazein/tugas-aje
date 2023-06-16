@@ -1,423 +1,603 @@
-<!-- Created By CodingNepal - www.codingnepalweb.com  -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Kesultanan Banjar</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kuis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
     <style>
-    /* importing google fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+        html {
+            box-sizing: border-box;
+        }
 
-body{
-    background: #007bff;
-}
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
 
-::selection{
-    color: #fff;
-    background: #007bff;
-}
+        html,
+        body {
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
 
-.start_btn,
-.info_box,
-.quiz_box,
-.result_box{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 
-                0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+        body {
+            background: #a8c0ff;
+            font-family: 'Comfortaa', cursive;
+            color: #fff;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            counter-reset: points;
+        }
 
-.info_box.activeInfo,
-.quiz_box.activeQuiz,
-.result_box.activeResult{
-    opacity: 1;
-    z-index: 5;
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1);
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-.start_btn button{
-    font-size: 25px;
-    font-weight: 500;
-    color: #007bff;
-    padding: 15px 30px;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    background: #fff;
-    cursor: pointer;
-}
+        section {
+            background: #a8c0ff;
+            background: -webkit-linear-gradient(to right, #3f2b96, #a8c0ff);
+            background: linear-gradient(to right, #3f2b96, #a8c0ff);
+            padding-top: 80px;
+            overflow-y: hidden;
+        }
 
-.info_box{
-    width: 540px;
-    background: #fff;
-    border-radius: 5px;
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-}
+        main {
+            background: rgba(217, 214, 228, 0.12);
+            border-radius: 10px;
+            padding: 5px 20px 50px;
+            width: 95%;
+            max-width: 500px;
+            margin: 0 auto 214px;
+        }
 
-.info_box .info-title{
-    height: 60px;
-    width: 100%;
-    border-bottom: 1px solid lightgrey;
-    display: flex;
-    align-items: center;
-    padding: 0 30px;
-    border-radius: 5px 5px 0 0;
-    font-size: 20px;
-    font-weight: 600;
-}
+        .text-container {
+            text-align: center;
+        }
 
-.info_box .info-list{
-    padding: 15px 30px;
-}
+        .quiz-options {
+            margin: 60px 0;
+        }
 
-.info_box .info-list .info{
-    margin: 5px 0;
-    font-size: 17px;
-}
+        [type=radio] {
+            border: 0;
+            height: 0.0625rem;
+            width: 0.0625rem;
+            position: absolute;
+        }
 
-.info_box .info-list .info span{
-    font-weight: 600;
-    color: #007bff;
-}
-.info_box .buttons{
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0 30px;
-    border-top: 1px solid lightgrey;
-}
+        label {
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            background: rgba(255, 5, 5, 0.72);
+            margin-bottom: 15px;
+            padding: 6px 0;
+            position: relative;
+            width: 100%;
+            color: #000;
+        }
 
-.info_box .buttons button{
-    margin: 0 5px;
-    height: 40px;
-    width: 100px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    border: 1px solid #007bff;
-    transition: all 0.3s ease;
-}
+        label:hover .alphabet {
+            background: #000;
+            color: #fff;
+        }
 
-.quiz_box{
-    width: 550px;
-    background: #fff;
-    border-radius: 5px;
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-}
+        label .alphabet {
+            border-radius: 5px;
+            border: solid 1px #000;
+            padding: .4rem .5rem .4rem;
+            width: 2.3rem;
+            margin: 0 1.3rem 0 .7rem;
+            display: flex;
+            justify-content: center;
+            color: #000;
+        }
 
-.quiz_box header{
-    position: relative;
-    z-index: 2;
-    height: 70px;
-    padding: 0 30px;
-    background: #fff;
-    border-radius: 5px 5px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.1);
-}
+        label .icon {
+            height: auto;
+            position: absolute;
+            left: 92%;
+            top: 12px;
+        }
 
-.quiz_box header .title{
-    font-size: 20px;
-    font-weight: 600;
-}
+        label .jfdedgwfzexf4hjin {
+            width: 18px;
+        }
 
-.quiz_box header .timer{
-    color: #004085;
-    background: #cce5ff;
-    border: 1px solid #b8daff;
-    height: 45px;
-    padding: 0 8px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 145px;
-}
+        label .jdsjkefkefkefefexco {
+            width: 22px;
+        }
 
-.quiz_box header .timer .time_left_txt{
-    font-weight: 400;
-    font-size: 17px;
-    user-select: none;
-}
+        .jshdgdgwgdwfdfwdwjfdjwwdwdco:checked+label {
+            background: rgb(76, 245, 194);
+            font-weight: bold;
+            text-transform: uppercase;
+            -webkit-text-stroke: .6px #fff;
+        }
 
-.quiz_box header .timer .timer_sec{
-    font-size: 18px;
-    font-weight: 500;
-    height: 30px;
-    width: 45px;
-    color: #fff;
-    border-radius: 5px;
-    line-height: 30px;
-    text-align: center;
-    background: #343a40;
-    border: 1px solid #343a40;
-    user-select: none;
-}
+        .jshdgdgwgdwfdfwdwjfdjwwdwdco:checked+label .alphabet {
+            background: #000000;
+            color: #FFF;
+        }
 
-.quiz_box header .time_line{
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    height: 3px;
-    background: #007bff;
-}
+        .jshdgdgwgdwfdfwdwjfdjwwdwdin:checked+label {
+            font-weight: bold;
+            text-transform: uppercase;
+            -webkit-text-stroke: .6px #fff;
+        }
 
-section{
-    padding: 25px 30px 20px 30px;
-    background: #fff;
-}
+        .jshdgdgwgdwfdfwdwjfdjwwdwdin:checked+label .alphabet {
+            background: #000;
+            color: #fff;
+        }
 
-section .que_text{
-    font-size: 25px;
-    font-weight: 600;
-}
+        .one-a:valid+label,
+        .two-c:valid+label,
+        .three-c:valid+label,
+        .four-b:valid+label,
+        .five-a:valid+label {
+            animation: flash 0.6s infinite;
+        }
 
-section .option_list{
-    padding: 20px 0px;
-    display: block;   
-}
+        @keyframes flash {
+            0% {
+                background-color: #4cf5c2;
+            }
 
-section .option_list .option{
-    background: aliceblue;
-    border: 1px solid #84c5fe;
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 17px;
-    margin-bottom: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+            49% {
+                background-color: #4cf5c2;
+            }
 
-section .option_list .option:last-child{
-    margin-bottom: 0px;
-}
+            50% {
+                background-color: #000;
+            }
 
-section .option_list .option:hover{
-    color: #004085;
-    background: #cce5ff;
-    border: 1px solid #b8daff;
-}
+            99% {
+                background-color: #000;
+            }
 
-section .option_list .option.correct{
-    color: #155724;
-    background: #d4edda;
-    border: 1px solid #c3e6cb;
-}
+            100% {
+                background-color: #4cf5c2;
+            }
+        }
 
-section .option_list .option.incorrect{
-    color: #721c24;
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-}
+        input:invalid+label {
+            background: #fff;
+        }
 
-section .option_list .option.disabled{
-    pointer-events: none;
-}
+        input:invalid+label:hover {
+            background: linear-gradient(to right, #d8d9da 10%, #ffffff 80%);
+        }
 
-section .option_list .option .icon{
-    height: 26px;
-    width: 26px;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 13px;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    line-height: 24px;
-}
-.option_list .option .icon.tick{
-    color: #23903c;
-    border-color: #23903c;
-    background: #d4edda;
-}
+        input:valid+label {
+            color: #fff;
+            pointer-events: none
+        }
 
-.option_list .option .icon.cross{
-    color: #a42834;
-    background: #f8d7da;
-    border-color: #a42834;
-}
+        #btn {
+            border: 1px solid #000;
+            border-radius: 50px;
+            background: rgb(247, 206, 206);
+            color: #000;
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 57%;
+            margin: 0 auto;
+            outline: none;
+            padding: 11px 0;
+            text-align: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-footer{
-    height: 60px;
-    padding: 0 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid lightgrey;
-}
+        #btn:hover {
+            background: rgba(255, 255, 255, 0.671);
+            color: rgba(0, 0, 0, 0.749);
+            border: 1px solid #000;
+        }
 
-footer .total_que span{
-    display: flex;
-    user-select: none;
-}
+        form:invalid #btn {
+            pointer-events: none;
+            background: rgba(248, 214, 214, 0.767);
+        }
 
-footer .total_que span p{
-    font-weight: 500;
-    padding: 0 5px;
-}
+        .btn:hover {
+            background: #000;
+            color: #fff;
+        }
 
-footer .total_que span p:first-child{
-    padding-left: 0px;
-}
+        .score-counter {
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            width: 210px;
+            height: 9%;
+            background: rgba(0, 0, 0, 0.749);
+            border: 4px solid #000;
+            position: fixed;
+            top: 5px;
+            right: 10px;
+            box-shadow: inset 2px -2px 9px #020202, inset -2px 2px 9px #d2d2d2;
+        }
 
-footer button{
-    height: 40px;
-    padding: 0 13px;
-    font-size: 18px;
-    font-weight: 400;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    color: #fff;
-    border-radius: 5px;
-    background: #007bff;
-    border: 1px solid #007bff;
-    line-height: 10px;
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.95);
-    transition: all 0.3s ease;
-}
+        .score-text {
+            margin: 0 20px;
+        }
 
-footer button:hover{
-    background: #0263ca;
-}
+        /* .score-counter::after {
+    content:"/5";
+} */
 
-footer button.show{
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
-}
+        .one-a:checked,
+        .two-c:checked,
+        .three-c:checked,
+        .four-b:checked,
+        .five-a:checked {
+            counter-increment: points;
+        }
 
-.result_box{
-    background: #fff;
-    border-radius: 5px;
-    display: flex;
-    padding: 25px 30px;
-    width: 450px;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-}
+        #game-over {
+            background: linear-gradient(rgb(28, 22, 49), rgba(18, 18, 25, 0.9)), repeating-linear-gradient(0, transparent, transparent 2px, black 3px, black 3px);
+            font-family: 'Bungee', cursive;
+            /* position: absolute; */
+            width: 100%;
+            height: 100vh;
+        }
 
-.result_box .icon{
-    font-size: 100px;
-    color: #007bff;
-    margin-bottom: 10px;
-}
+        .game-over-content {
+            display: grid;
+            justify-items: center;
+            width: 80%;
+            margin: 0 auto;
+            padding: 120px 0;
+        }
 
-.result_box .complete_text{
-    font-size: 20px;
-    font-weight: 500;
-}
+        #game-over h1 {
+            background-color: #3f2b96;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-size: contain;
+            font-size: 5rem;
+            line-height: 1.2;
+            margin: 0;
+            position: relative;
+        }
 
-.result_box .score_text span{
-    display: flex;
-    margin: 10px 0;
-    font-size: 18px;
-    font-weight: 500;
-}
+        h1::before {
+            content: attr(data-heading);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0) 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+            mix-blend-mode: screen;
+            animation: shine 1s infinite;
+            background-size: 200%;
+            text-shadow: 2px 2px 10px rgba(#000, 0.2), -2px 2px 10px rgba(#000, 0.2), -2px -2px 10px rgba(#000, 0.2);
+        }
 
-.result_box .score_text span p{
-    padding: 0 4px;
-    font-weight: 600;
-}
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
 
-.result_box .buttons{
-    display: flex;
-    margin: 20px 0;
-}
+            49% {
+                opacity: 9;
+            }
 
-.result_box .buttons button{
-    margin: 0 10px;
-    height: 45px;
-    padding: 0 20px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    border: 1px solid #007bff;
-    transition: all 0.3s ease;
-}
+            50% {
+                opacity: .8;
+            }
 
-.buttons button.restart{
-    color: #fff;
-    background: #007bff;
-}
+            99% {
+                opacity: .5;
+            }
 
-.buttons button.restart:hover{
-    background: #0263ca;
-}
+            100% {
+                opacity: .3;
+            }
+        }
 
-.buttons button.quit{
-    color: #007bff;
-    background: #fff;
-}
+        @keyframes shine {
+            0% {
+                background-position: -100%;
+            }
 
-.buttons button.quit:hover{
-    color: #fff;
-    background: #007bff;
-}
-            
-        
+            100% {
+                background-position: 100%;
+            }
+        }
+
+        .over-text-cont {
+            text-align: center;
+        }
+
+        .over-text-cont h2 {
+            font-family: 'Sirin Stencil', cursive;
+        }
+
+        /* .over-text-cont h2::after {
+    content: counter(points) "0/50";
+    margin-left: 15px;
+} */
+
+        #refresh {
+            color: #fff;
+            position: relative;
+            height: 100vh;
+        }
+
+        .refresh-content {
+            display: grid;
+            font-size: 1.2rem;
+            place-items: center;
+            width: 70%;
+            line-height: 2;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .refresh-content svg {
+            width: 50px;
+            height: auto;
+            animation: pulse 1s infinite;
+        }
+
+
+        /* MEDIA QUERY */
+
+        @media (max-width: 420px) {
+            body {
+                font-size: .8rem;
+            }
+
+            main {
+                width: 92%;
+            }
+
+            section {
+                background: linear-gradient(to right, #3f2b96, #1f0961);
+            }
+
+            label {
+                font-size: .71rem;
+            }
+
+            label .alphabet {
+                margin: 0 .9rem 0 .7rem;
+            }
+
+            .jshdgdgwgdwfdfwdwjfdjwwdwdco:checked+label {
+                -webkit-text-stroke: .1px #fff;
+            }
+
+            label .jdsjkefkefkefefexco {
+                width: 16px;
+            }
+
+            label .jfdedgwfzexf4hjin {
+                width: 14px;
+            }
+
+            #game-over h1 {
+                font-size: 3rem;
+            }
+
+            .score-counter {
+                width: 120px;
+                height: 5%;
+                font-size: .7rem;
+            }
+
+            .score-text {
+                margin: 0 20px 0 0;
+            }
+
+            .over-text-cont h2 {
+                margin-bottom: 40px;
+            }
+
+            .over-text-cont #btn {
+                padding: 3px 0;
+            }
+
+            .refresh-content {
+                width: 90%;
+            }
+
+            .refresh-content {
+                display: grid;
+                font-size: .8rem;
+            }
+        }
+
+        @media (max-width: 325px) {
+
+            label {
+                font-size: .63rem;
+            }
+
+            label .alphabet {
+                margin: 0 .55rem 0 .7rem;
+            }
+
+            label .jdsjkefkefkefefexco {
+                width: 14px;
+            }
+
+            label .jfdedgwfzexf4hjin {
+                width: 12px;
+            }
+
+        }
     </style>
 </head>
+
 <body>
+    <!-- QUIZ ONE -->
+    @foreach ($items as $key => $item)
+        <section class="section-{{ $key + 1 }}" id="section-{{ $key + 1 }}"
+            style="{{ $key > 0 ? 'display:none' : '' }}">
+            <main>
+                <div class="text-container" style="font-family: 'Rubik', sans-serif;">
+                    <h3>Pure CSS Quiz</h3>
+                    <p>QUESTION {{ $key + 1 }} OF {{ count($items) }}</p>
+                    <p>{{ $item->soal }}</p>
+                </div>
+                <form style="font-family: 'Rubik', sans-serif;">
+                    <div class="quiz-options">
+                        <input type="radio" class="input-radio" id="one-a-{{ $key + 1 }}"
+                            name="yes-{{ $key + 1 }}" value="{{ $item->option_a }}" required>
+                        <label style="background-color: #a8a8a8" class="radio-label" for="one-a-{{ $key + 1 }}"
+                            onclick="checkAnswer('{{ $item->option_a }}', 'one-a-{{ $key + 1 }}','{{ $item->Jawaban }}')">
+                            <span class="alphabet">A</span> {{ $item->option_a }} <img class="icon">
+                        </label>
+                        <input type="radio" class="input-radio" id="one-b-{{ $key + 1 }}"
+                            name="yes-{{ $key + 1 }}" value="{{ $item->option_b }}">
+                        <label style="background-color: #a8a8a8" class="radio-label" for="one-b-{{ $key + 1 }}"
+                            onclick="checkAnswer('{{ $item->option_b }}', 'one-b-{{ $key + 1 }}','{{ $item->Jawaban }}')">
+                            <span class="alphabet">B</span> {{ $item->option_b }} <img class="icon">
+                        </label>
+                        <input type="radio" class="input-radio" id="one-c-{{ $key + 1 }}"
+                            name="yes-{{ $key + 1 }}" value="{{ $item->option_c }}">
+                        <label style="background-color: #a8a8a8" class="radio-label" for="one-c-{{ $key + 1 }}"
+                            onclick="checkAnswer('{{ $item->option_c }}', 'one-c-{{ $key + 1 }}','{{ $item->Jawaban }}')">
+                            <span class="alphabet">C</span> {{ $item->option_c }} <img class="icon">
+                        </label>
+                        <input type="radio" class="input-radio" id="one-d-{{ $key + 1 }}"
+                            name="yes-{{ $key + 1 }}" value="{{ $item->option_d }}">
+                        <label style="background-color: #a8a8a8" class="radio-label" for="one-d-{{ $key + 1 }}"
+                            onclick="checkAnswer('{{ $item->option_d }}', 'one-d-{{ $key + 1 }}','{{ $item->Jawaban }}')">
+                            <span class="alphabet">D</span> {{ $item->option_d }} <img class="icon">
+                        </label>
 
-    <div class="start_btn">
-        <button onclick="ocation.href = {{ route('login') }}">Start Quiz</button>
-     </div>
-     
+                    </div>
+                    @if ($key + 1 < count($items))
+                        <a style="background-color: #a8a8a8" id="btn"
+                            onclick="nextSection({{ $key + 1 }})">Next</a>
+                    @else
+                        <a style="background-color: #a8a8a8" id="btn"
+                            onclick="window.location.href='#game-over'">Next</a>
+                    @endif
+                </form>
+            </main>
+        </section>
+    @endforeach
 
-     <!-- Info Box -->
-     <div class="info_box">
-        <div class="info-title"><span>Some Rules of this Quiz</span></div>
-        <div class="info-list">
-            <div class="info">1. Anda hanya akan memiliki waktu <span>15 detik</span> untuk setiap pertanyaan.</div>
-            <div class="info">2. Setelah Anda memilih jawaban, tidak dapat dibatalkan.</div>
-            <div class="info">3. Anda tidk dapat memilih jawaban ketika waktu habis.</div>
-            <div class="info">4. Anda tidak dapat keluar ketika kuis sudah dimulai.</div>
-            <div class="info">5. Anda akan mendapatkan poin berdasarkan jawaban yang benar.</div>
-        </div>
-        <div class="buttons">
-            {{-- <a href="{{ route('mulai.index')}}" class="quit">Exit Quiz</a> --}}
-            <a href="{{ route('mulai.kuis') }}" class="start_btn">Continue</a>
-        </div>
+    <div class="score-counter" style="font-family: 'Rubik', sans-serif;">
+        <p class="score-text">CORRECT: <span id="score">0</span></p>
     </div>
 
+    <!-- GAME OVER PAGE -->
+    <section id="game-over">
+        <div class="game-over-content">
+            <div class="over-text-cont">
+                <h1 data-heading="Game Over">Game Over</h1>
+                <h2 style="font-family: 'Rubik', sans-serif;" id="total_skor">Total Score:</h2>
 
-  
+                <form style="margin-bottom: 10px" action="{{ route('store.leaderboard') }}" method="post"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="">
+                        <input type="text" class="form-control" name="nama" id="nama_user"
+                            style="visibility: hidden" value="">
+                    </div>
+                    <div class="">
+                        <input type="number" class="form-control" name="skor" id="skor_user"
+                            style="visibility: hidden" value="">
+                    </div>
+                    <div class="about_section layout_padding">
 
+                        <button id="btn" data-bs-toggle="modal" type="submit">
+                            Masukan Skor ke Leaderboard
+                        </button>
+                </form>
+
+
+                {{--  --}}
+                <form action="{{ route('kuis.index') }}" method="get" style="display: inline">
+                    <button id="btn" data-bs-toggle="modal">
+                        Play Again
+                    </button>
+                </form>
+
+                {{-- <a id="btn" type="submit" onclick="window.location.href='#refresh'">Play Again</a> --}}
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let jawaban_benar = 0;
+        let skor = 0;
+
+
+        function nextSection(currentIndex) {
+            // Menyembunyikan bagian saat ini
+            document.getElementById(`section-${currentIndex}`).style.display = 'none';
+
+            // Menampilkan bagian berikutnya
+            const nextIndex = currentIndex + 1;
+            document.getElementById(`section-${nextIndex}`).style.display = 'block';
+        }
+
+        function checkAnswer(correctAnswer, selectedOption, Jawaban) {
+            const label = document.querySelector(`label[for="${selectedOption}"]`);
+            const radio = document.getElementById(selectedOption);
+
+            if (Jawaban === correctAnswer) {
+                label.style.backgroundColor = 'green';
+                jawaban_benar++
+                skor += 10;
+            } else {
+                label.style.backgroundColor = 'red';
+            }
+
+            document.getElementById('score').textContent = jawaban_benar;
+            document.getElementById('total_skor').textContent = 'Total Skor : ' + skor;
+
+            document.getElementById('nama_user').value = "<?php echo Auth::user()->name; ?>";
+            document.getElementById('skor_user').value = skor;
+
+        }
+    </script>
+
+
+
+
+
+
+
+    <!-- REFRESH PAGE SECTION -->
+    <section id="refresh">
+        <div class="refresh-content">
+            <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 341.12 341.33">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: #fff;
+                        }
+                    </style>
+                </defs>
+                <title>multimedia2</title>
+                <path class="cls-1"
+                    d="M341.23,149.33V0L291.09,50.13A169.56,169.56,0,0,0,170.56,0C76.27,0,.11,76.37.11,170.67S76.27,341.33,170.56,341.33c79.47,0,146-54.4,164.91-128H291.09A127.94,127.94,0,1,1,170.56,42.67c35.31,0,67,14.72,90.13,37.86l-68.8,68.8Z"
+                    transform="translate(-0.11)" />
+            </svg>
+            <h2>Refresh/Reload this page to continue</h2>
+        </div>
+    </section>
 </body>
+
 </html>

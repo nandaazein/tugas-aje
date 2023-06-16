@@ -6,7 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\StartController;
-
+use App\Models\Kuis;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,8 +58,12 @@ Route::get('layout/quis', [KuisController::class, 'index'])->name('menu.quis');
 Route::put('/mulaikuis/{id}', [KuisController::class, 'update'])->name('mulaikuis.update');
 
 // Kuis Mulai
-Route::get('/kuis', [StartController::class, 'index'])->name('mulai.rules');
-Route::get('/kuis', [StartController::class, 'startkuis'])->name('mulai.kuis');
+Route::get('/kuis/startkuis', [StartController::class, 'startkuis'])->name('startkuis');
+Route::post('/kuis/leaderboardinsert', [StartController::class, 'store_leaderboard'])->name('store.leaderboard');
+
+Route::get('/kuis/leaderboard', [StartController::class, 'viewleaderboard'])->name('leaderboard');
+
+Route::post('/leaderboard/reset', [StartController::class, 'resetLeaderboard'])->name('leaderboard.reset');
 
 // leaderboard
 // Route::get('/kuis/startkuis', [KuisController::class, 'startkuis'])->name('startkuis');
