@@ -94,48 +94,53 @@
                     {{ session()->get('success') }}
                 </div>
             @endif
-            @foreach ($items as $item)
-                <div class="container mt-4" style="background-color: #655DBB; border-radius: 10px; padding: 10px">
-                    <h5 style="color: #ECF2FF">{{ $item->soal }}</h5>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1" style="color: #ECF2FF">
-                            {{ $item->option_a }}
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2" style="color: #ECF2FF">
-                            {{ $item->option_b }}
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                        <label class="form-check-label" for="flexRadioDefault3" style="color: #ECF2FF">
-                            {{ $item->option_c }}
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                            id="flexRadioDefault4">
-                        <label class="form-check-label" for="flexRadioDefault4" style="color: #ECF2FF">
-                            {{ $item->option_d }}
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                            id="flexRadioDefault5">
-                        <label class="form-check-label" for="flexRadioDefault5" style="color: #ECF2FF"> Jawaban :
-                            {{ $item->Jawaban }}
-                        </label>
-                    </div>
+            @if (auth()->user()->level == 'admin')
+                @foreach ($items as $item)
+                    <div class="container mt-4" style="background-color: #655DBB; border-radius: 10px; padding: 10px">
+                        <h5 style="color: #ECF2FF">{{ $item->soal }}</h5>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1" style="color: #ECF2FF">
+                                {{ $item->option_a }}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault2" style="color: #ECF2FF">
+                                {{ $item->option_b }}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                id="flexRadioDefault3">
+                            <label class="form-check-label" for="flexRadioDefault3" style="color: #ECF2FF">
+                                {{ $item->option_c }}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                id="flexRadioDefault4">
+                            <label class="form-check-label" for="flexRadioDefault4" style="color: #ECF2FF">
+                                {{ $item->option_d }}
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                id="flexRadioDefault5">
+                            <label class="form-check-label" for="flexRadioDefault5" style="color: #ECF2FF"> Jawaban :
+                                {{ $item->Jawaban }}
+                            </label>
+                        </div>
 
 
 
-                    {{-- ADMIN --}}
+                        {{-- ADMIN --}}
 
-                    <div class="mt-3">
-                        @if (auth()->user()->level == 'admin')
+                        <div class="mt-3">
+
                             <form action="{{ route('mulaikuis.destroy', $item->id) }}" method="POST"
                                 style="display: inline">
                                 @csrf
@@ -146,63 +151,64 @@
                                 data-bs-target="#editItem{{ $item->id }}">
                                 Edit
                             </button>
-                        @endif
+
+                        </div>
+
                     </div>
 
-                </div>
+                    <!-- Modal Edit -->
+                    <div class="modal" id="editItem{{ $item->id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Soal</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('mulaikuis.update', $item->id) }}" method="post"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="mb-3">
+                                            <label for="title">Soal</label>
+                                            <input type="text" class="form-control" name="soal" id="title"
+                                                value="{{ $item->soal }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description">Option A</label>
+                                            <input type="text" name="option_a" id="option_a" cols="10"
+                                                rows="5" class="form-control" value="{{ $item->option_a }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description">Option B</label>
+                                            <input type="text" name="option_b" id="option_b" cols="10"
+                                                rows="5" class="form-control" value="{{ $item->option_b }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description">Option C</label>
+                                            <input type="text" name="option_c" id="option_c" cols="10"
+                                                rows="5" class="form-control" value="{{ $item->option_c }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description">Option D</label>
+                                            <input type="text" name="option_d" id="option_d" cols="10"
+                                                rows="5" class="form-control" value="{{ $item->option_d }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description">Jawaban</label>
+                                            <input type="text" name="Jawaban" id="Jawaban" cols="10"
+                                                rows="5" class="form-control" value="{{ $item->Jawaban }}">
+                                        </div>
 
-                <!-- Modal Edit -->
-                <div class="modal" id="editItem{{ $item->id }}" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Edit Soal</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('mulaikuis.update', $item->id) }}" method="post"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-3">
-                                        <label for="title">Soal</label>
-                                        <input type="text" class="form-control" name="soal" id="title"
-                                            value="{{ $item->soal }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description">Option A</label>
-                                        <input type="text" name="option_a" id="option_a" cols="10"
-                                            rows="5" class="form-control" value="{{ $item->option_a }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description">Option B</label>
-                                        <input type="text" name="option_b" id="option_b" cols="10"
-                                            rows="5" class="form-control" value="{{ $item->option_b }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description">Option C</label>
-                                        <input type="text" name="option_c" id="option_c" cols="10"
-                                            rows="5" class="form-control" value="{{ $item->option_c }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description">Option D</label>
-                                        <input type="text" name="option_d" id="option_d" cols="10"
-                                            rows="5" class="form-control" value="{{ $item->option_d }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description">Jawaban</label>
-                                        <input type="text" name="Jawaban" id="Jawaban" cols="10"
-                                            rows="5" class="form-control" value="{{ $item->Jawaban }}">
-                                    </div>
-
-                                    <button class="btn btn-primary" type="submit">Edit Kuis</button>
-                                </form>
+                                        <button class="btn btn-primary" type="submit">Edit Kuis</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            @endif
         </div>
 
         <div class="modal" id="addItem" tabindex="-1">
